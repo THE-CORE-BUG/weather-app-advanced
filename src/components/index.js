@@ -1,10 +1,13 @@
 import React,{useState,useEffect} from 'react';
 import {InputGroup,FormControl,Button} from 'react-bootstrap';
-import { Container, Row, Col } from "react-bootstrap";
-import { IoSunnyOutline, IoRainy } from "react-icons/io5";
+import { Container, Row, Col, Card } from "react-bootstrap";
+import { IoSunnyOutline, IoRainy, IoSnowSharp, IoThunderstormSharp } from "react-icons/io5";
 import { WiSunset,WiHumidity,WiDayCloudy, WiDayHaze } from "react-icons/wi";
 import { BiWind } from "react-icons/bi";
 import { GiSpeedometer } from "react-icons/gi";
+import { RiMistFill } from "react-icons/ri";
+import { FiCloudDrizzle } from "react-icons/fi";
+
 
 import './style.css'
 
@@ -13,6 +16,7 @@ const Index = () => {
     const [datas,setDatas] = useState("sunny");
     const [temp3,setTemp3] = useState("Kolkata");
     const [info,setInfo] = useState("");
+    const [count,setCount] = useState(0);
 
     useEffect(()=>{
         const set = async() =>
@@ -39,7 +43,7 @@ const Index = () => {
                 {
                     switch(mood)
                     {
-                        case 'Cloudy':
+                        case 'Clouds':
                             img = <WiDayCloudy />;
                             break;
                         case 'Rain':
@@ -47,6 +51,18 @@ const Index = () => {
                             break;
                         case 'Haze':
                             img = <WiDayHaze />;
+                            break;
+                        case 'Mist':
+                            img = <RiMistFill />
+                            break;
+                        case 'Snow':
+                            img = <IoSnowSharp />
+                            break;
+                        case 'Thunderstorm':
+                            img = <IoThunderstormSharp />
+                            break;
+                        case 'Drizzle':
+                            img = <FiCloudDrizzle />
                             break;
                         default:
                             img = <IoSunnyOutline />;
@@ -57,7 +73,9 @@ const Index = () => {
 
                 const temp2 = { mood, country, sunset, speed, humidity, temp, pressure,time, date3 };
                 setDatas(temp2);
+                setCount(0);
             } catch (error) {
+                setCount(1);
                 console.log(error);
             }
         }
@@ -82,7 +100,7 @@ const Index = () => {
                 </div>
             </Row>
 
-
+            {count===1 ? <p style={{'color': 'white'}}>No Data Found</p> : (
             <Row>
                 <div className="main">
                    
@@ -97,11 +115,11 @@ const Index = () => {
                         
                         <Row>
                             <Col>
-                                <h1 style={{'paddingLeft': '10px'}}>{datas.temp}&deg;c </h1>
+                                <h1 style={{'paddingLeft': '10px','fontFamily': 'Ubuntu'}}>{datas.temp}&deg;c </h1>
                             </Col>
 
                             <Col>
-                                <h3>{temp3}<br /></h3>
+                                <h3 style={{'fontFamily': 'Source Sans Pro'}}>{temp3}<br /></h3>
                                 {datas.country}                     
                             </Col>
 
@@ -110,16 +128,17 @@ const Index = () => {
                             </Col>
 
                             <Col>
-                                <h2>{datas.mood}</h2>
+                                <h3 style={{'fontFamily': 'Ubuntu'}}>{datas.mood}<br /></h3>
+                                <span style={{'fontFamily': 'Source Sans Pro'}}>Condition</span>
                             </Col>
                         </Row>
                     </div>
 
                     <div className="main-date" md="6">
-                        {datas.date3}
+                        <span style={{'fontFamily': 'Quicksand'}}>{datas.date3}</span>
                     </div>
 
-                    <div className="main-info mt-3">
+                    <div className="main-info mt-3" style={{'fontFamily': 'Ubuntu'}}>
                         <Row>
 
                             <Col>
@@ -189,12 +208,16 @@ const Index = () => {
                                 </Row>
                             </Col>
                         </Row>
+                        <br />
+                        <br />
+                        <Card.Footer className="text-muted">Made with 🌶️ by <strong>Ritam Kabiraj</strong></Card.Footer>
                     </div>
                    
                     
                     
                 </div>
             </Row>
+            )}
         </Container>
     )
 }
